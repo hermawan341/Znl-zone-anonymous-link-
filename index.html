@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZNL - Zone Anonymous Link</title>
+    <meta name="description" content="Terima pesan anonim dari siapa saja. Katakan sesuatu tanpa diketahui siapa kamu.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ============================================
+           CSS VARIABLES & RESET
+           ============================================ */
+        :root {
+            /* Colors - Dark Theme */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --bg-card: rgba(26, 26, 37, 0.7);
+            --bg-glass: rgba(26, 26, 37, 0.4);
+            
+            /* Gradient Colors */
+            --gradient-1: #6366f1;
+            --gradient-2: #a855f7;
+            --gradient-3: #38bdf8;
+            
+            /* Text Colors */
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            
+            /* Accent Colors */
+            --accent-success: #22c55e;
+            --accent-warning: #f59e0b;
+            --accent-error: #ef4444;
+            --accent-info: #3b82f6;
+            
+            /* Premium Gold */
+            --premium-gold: #fbbf24;
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%) translateY(-50%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        @keyframes toastSlideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        /* ============================================
+           BACKGROUND EFFECTS
+           ============================================ */
+        .bg-gradient-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-gradient-mesh::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 60%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* ============================================
+           LOGO STYLES
+           ============================================ */
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+            opacity: 0.6;
+        }
+
+        .logo-small {
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .logo-glow {
+            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.6));
+        }
+
+        /* ============================================
+           LOGIN PAGE STYLES
+           ============================================ */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .login-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .login-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-normal);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--gradient-1);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: var(--spacing-md);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a1a;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+        }
+
+        .tagline {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .tagline-secondary {
+            font-style: italic;
+            margin-top: var(--spacing-sm);
+        }
+
+        /* ============================================
+           DASHBOARD LAYOUT
+           ============================================ */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard.active {
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+            transform: translateX(-100%);
+            transition: transform var(--transition-normal);
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-header {
+            padding: var(--spacing-xl);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-status {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: var(--radius-full);
+            background: var(--accent-success);
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.premium {
+            background: var(--premium-gold);
+        }
+
+        .sidebar-nav {
+            padding: var(--spacing-md);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin-bottom: var(--spacing-xs);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.1));
+            color: var(--text-primary);
+            border-left: 3px solid var(--gradient-1);
+        }
+
+        .nav-item i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-item.premium-item {
+            color: var(--premium-gold);
+        }
+
+        .nav-item.premium-item:hover {
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .sidebar-footer {
+            padding: var(--spacing-md);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            min-height: 100vh;
+            transition: margin-left var(--transition-normal);
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 280px;
+            }
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: var(--spacing-md) var(--spacing-lg);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .menu-toggle:hover {
+            background: var(--bg-card);
+        }
+
+        @media (min-width: 1024px) {
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+        .header-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .header-btn:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-error);
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Content Area */
+        .content {
+            padding: var(--spacing-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ============================================
+           CARDS & COMPONENTS
+           ============================================ */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            transition: all var(--transition-normal);
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .card-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .card-title i {
+            color: var(--gradient-1);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        @media (min-width: 640px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            transition: all var(--transition-normal);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .stat-icon.blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        .stat-icon.purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: #a855f7;
+        }
+
+        .stat-icon.green {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .stat-icon.gold {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: var(--spacing-xs);
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .welcome-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .welcome-text {
+            color: var(--text-secondary);
+        }
+
+        /* Link Card */
+        .link-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(56, 189, 248, 0.05));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .link-display {
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin: var(--spacing-lg) 0;
+            word-break: break-all;
+            position: relative;
+        }
+
+        .link-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 0.875rem;
+        }
+
+        /* Message Card */
+        .message-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            animation: fadeInUp 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--gradient-1), var(--gradient-2));
+        }
+
+        .message-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .message-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .message-device {
+            font-size: 0.8rem;
+            color: var(--premium-gold);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            background: rgba(251, 191, 36, 0.1);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-full);
+        }
+
+        .message-device.locked {
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+            opacity: 0.5;
+        }
+
+        /* Search Section */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--gradient-1);
+        }
+
+        /* Send Message Form */
+        .send-message-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .recipient-info {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .recipient-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .recipient-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .recipient-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .message-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: var(--spacing-lg);
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .message-textarea:focus {
+            outline: none;
+            border-color: var(--gradient-1);
+        }
+
+        .message-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            color: var(--accent-error);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        /* Premium Card */
+        .premium-card {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05));
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .premium-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--spacing-lg);
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .premium-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--premium-gold);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .premium-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .premium-price span {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .premium-features {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto var(--spacing-xl);
+        }
+
+        .premium-feature {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) 0;
+            color: var(--text-secondary);
+        }
+
+        .premium-feature i {
+            color: var(--premium-gold);
+        }
+
+        .premium-activated {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .premium-activated i {
+            font-size: 3rem;
+            color: var(--accent-success);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .premium-expiry {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: var(--spacing-sm);
+        }
+
+        .password-input {
+            margin: var(--spacing-lg) 0;
+        }
+
+        /* Notification Card */
+        .notification-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-md);
+            transition: all var(--transition-fast);
+        }
+
+        .notification-card:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .notification-card.unread {
+            border-left: 3px solid var(--gradient-1);
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notification-icon.message {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        .notification-icon.bot {
+            background: rgba(168, 85, 247, 0.15);
+            color: #a855f7;
+        }
+
+        .notification-icon.premium {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .notification-icon.system {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Info Card */
+        .info-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .info-value {
+            font-weight: 600;
+        }
+
+        .info-value.online {
+            color: var(--accent-success);
+        }
+
+        .info-value.offline {
+            color: var(--accent-error);
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .toast {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md) var(--spacing-lg);
+            min-width: 300px;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            box-shadow: var(--shadow-lg);
+            animation: toastSlideIn 0.3s ease;
+        }
+
+        .toast.hiding {
+            animation: toastSlideOut 0.3s ease forwards;
+        }
+
+        .toast-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .toast-icon.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .toast-icon.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .toast-icon.info {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .toast-message {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: var(--spacing-xs);
+            transition: color var(--transition-fast);
+        }
+
+        .toast-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            max-width: 450px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform var(--transition-normal);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .modal-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--gradient-1);
+            border-radius: var(--radius-full);
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-2xl);
+            gap: var(--spacing-md);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-premium {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--premium-gold);
+        }
+
+        .badge-free {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .login-card {
+                padding: var(--spacing-lg);
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .content {
+                padding: var(--spacing-md);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .link-actions {
+                flex-direction: column;
+            }
+
+            .link-actions .btn {
+                width: 100%;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .toast-container {
+                left: var(--spacing-md);
+                right: var(--spacing-md);
+            }
+
+            .toast {
+                min-width: auto;
+                max-width: none;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-full);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Selection */
+        ::selection {
+            background: rgba(99, 102, 241, 0.3);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-gradient-mesh"></div>
+    <div class="bg-noise"></div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================
+         LOGIN PAGE
+         ============================================ -->
+    <div class="login-container" id="loginPage">
+        <div class="login-card">
+            <div class="login-header">
+                <h1 class="logo">ZNL</h1>
+                <h2 class="login-title">Welcome to ZNL</h2>
+                <p class="login-subtitle">Login untuk membuka dashboard anonim kamu.</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" id="loginUsername" placeholder="Masukkan username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Masukkan password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+            </form>
+            
+            <button class="btn btn-secondary" id="showRegisterBtn">
+                <i class="fas fa-user-plus"></i>
+                Register
+            </button>
+            
+            <div class="tagline">
+                <p>"Terima pesan anonim dari siapa saja."</p>
+                <p class="tagline-secondary">"Katakan sesuatu tanpa diketahui siapa kamu."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         REGISTER PAGE
+         ============================================ -->
+    <div class="login-container" id="registerPage" style="display: none;">
+        <div class="login-card">
+            <div class="login-header">
+                <h1 class="logo">ZNL</h1>
+                <h2 class="login-title">Create Account</h2>
+                <p class="login-subtitle">Daftar untuk mendapatkan link anonim kamu.</p>
+            </div>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" id="registerUsername" placeholder="Pilih username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="registerPassword" placeholder="Buat password" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Konfirmasi Password</label>
+                    <input type="password" class="form-input" id="registerConfirmPassword" placeholder="Konfirmasi password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Register
+                </button>
+            </form>
+            
+            <button class="btn btn-secondary" id="showLoginBtn">
+                <i class="fas fa-arrow-left"></i>
+                Kembali ke Login
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================
+         DASHBOARD
+         ============================================ -->
+    <div class="dashboard" id="dashboard">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo logo-small logo-glow">ZNL</div>
+                <div class="sidebar-user">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-info">
+                        <div class="user-name" id="sidebarUsername">User</div>
+                        <div class="user-status">
+                            <span class="status-dot" id="statusDot"></span>
+                            <span id="userStatusText">Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a class="nav-item" data-page="link">
+                    <i class="fas fa-link"></i>
+                    <span>My Anonymous Link</span>
+                </a>
+                <a class="nav-item" data-page="messages">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                    <span class="notification-badge" id="messageBadge" style="display: none;">0</span>
+                </a>
+                <a class="nav-item" data-page="search">
+                    <i class="fas fa-search"></i>
+                    <span>Search URL For Message</span>
+                </a>
+                <a class="nav-item" data-page="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                    <span class="notification-badge" id="notifBadge" style="display: none;">0</span>
+                </a>
+                <a class="nav-item premium-item" data-page="premium">
+                    <i class="fas fa-crown"></i>
+                    <span>Premium</span>
+                </a>
+                <a class="nav-item" data-page="information">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Information</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="header-title" id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <button class="header-btn" id="headerNotifBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="headerNotifBadge" style="display: none;">0</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Dashboard Page -->
+                <div class="page active" id="page-dashboard">
+                    <div class="welcome-section">
+                        <h2 class="welcome-title" id="welcomeTitle">Welcome back, User</h2>
+                        <p class="welcome-text">Terima pesan anonim dari siapa saja tanpa mereka tahu identitasmu.</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="stat-value" id="totalMessages">0</div>
+                            <div class="stat-label">Total Pesan</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="stat-value" id="todayMessages">0</div>
+                            <div class="stat-label">Pesan Hari Ini</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon gold">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="stat-value" id="premiumStatus">
+                                <span class="badge badge-free">FREE</span>
+                            </div>
+                            <div class="stat-label">Status Premium</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="stat-value" id="serverStatus">ON</div>
+                            <div class="stat-label">Server Status</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-link"></i>
+                                Link Anonim Kamu
+                            </h3>
+                        </div>
+                        <div class="link-display" id="dashboardLink">https://znl.site/username</div>
+                        <div class="link-actions">
+                            <button class="btn btn-primary btn-small" id="copyLinkDashboard">
+                                <i class="fas fa-copy"></i>
+                                Copy Link
+                            </button>
+                            <button class="btn btn-secondary btn-small" id="shareLinkDashboard">
+                                <i class="fas fa-share-alt"></i>
+                                Share Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- My Anonymous Link Page -->
+                <div class="page" id="page-link">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-link"></i>
+                                My Anonymous Link
+                            </h3>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                            Bagikan link ini ke teman-temanmu untuk menerima pesan anonim.
+                        </p>
+                        <div class="link-card">
+                            <div class="link-display" id="myLink">https://znl.site/username</div>
+                            <div class="link-actions">
+                                <button class="btn btn-primary btn-small" id="copyLinkBtn">
+                                    <i class="fas fa-copy"></i>
+                                    Copy Link
+                                </button>
+                                <button class="btn btn-secondary btn-small" id="shareLinkBtn">
+                                    <i class="fas fa-share-alt"></i>
+                                    Share Link
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Messages Page -->
+                <div class="page" id="page-messages">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-envelope"></i>
+                                Pesan Anonim
+                            </h3>
+                        </div>
+                        <div id="messagesContainer">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>Belum ada pesan anonim</p>
+                                <p style="font-size: 0.875rem; margin-top: var(--spacing-sm);">
+                                    Bagikan link anonimmu untuk mulai menerima pesan!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search Page -->
+                <div class="page" id="page-search">
+                    <div class="search-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-search"></i>
+                                    Cari User
+                                </h3>
+                            </div>
+                            <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                                Cari username untuk mengirim pesan anonim.
+                            </p>
+                            <div class="search-box">
+                                <input type="text" class="search-input" id="searchUsername" placeholder="Masukkan username...">
+                                <button class="btn btn-primary" id="searchBtn">
+                                    <i class="fas fa-search"></i>
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Send Message Page -->
+                <div class="page" id="page-send">
+                    <div class="send-message-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Send Anonymous Message
+                                </h3>
+                            </div>
+                            <div class="recipient-info">
+                                <div class="recipient-avatar" id="recipientAvatar">U</div>
+                                <div>
+                                    <div class="recipient-name" id="recipientName">username</div>
+                                    <div class="recipient-label">Kirim pesan anonim ke user ini</div>
+                                </div>
+                            </div>
+                            <div id="selfMessageError" class="error-message" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Tidak bisa mengirim pesan untuk diri sendiri.
+                            </div>
+                            <textarea class="message-textarea" id="messageText" placeholder="Tulis pesan anonim kamu..."></textarea>
+                            <button class="btn btn-primary" id="sendMessageBtn">
+                                <i class="fas fa-paper-plane"></i>
+                                Send Message
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notifications Page -->
+                <div class="page" id="page-notifications">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-bell"></i>
+                                Notifications
+                            </h3>
+                        </div>
+                        <div id="notificationsContainer">
+                            <div class="empty-state">
+                                <i class="fas fa-bell-slash"></i>
+                                <p>Belum ada notifikasi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Premium Page -->
+                <div class="page" id="page-premium">
+                    <div class="premium-card" id="premiumUpgrade">
+                        <div class="premium-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h3 class="premium-title">Upgrade to Premium</h3>
+                        <div class="premium-price">
+                            Rp 2.000 <span>/ 30 hari</span>
+                        </div>
+                        <div class="premium-features">
+                            <div class="premium-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Lihat device pengirim pesan anonim</span>
+                            </div>
+                            <div class="premium-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Akses detail informasi pengirim</span>
+                            </div>
+                            <div class="premium-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Prioritas notifikasi</span>
+                            </div>
+                            <div class="premium-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Tanpa iklan</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20upgrade%20Premium%20ZNL" target="_blank" class="btn btn-gold" id="buyPremiumBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            Beli Premium
+                        </a>
+                        <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid rgba(255,255,255,0.1);">
+                            <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: var(--spacing-md);">
+                                Sudah membeli? Masukkan password aktivasi:
+                            </p>
+                            <input type="password" class="form-input password-input" id="premiumPassword" placeholder="Masukkan password premium...">
+                            <button class="btn btn-primary" id="activatePremiumBtn" style="margin-top: var(--spacing-md);">
+                                <i class="fas fa-unlock"></i>
+                                Aktifkan Premium
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="premium-activated" id="premiumActive" style="display: none;">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Premium Aktif!</h3>
+                        <p>Selamat! Kamu sekarang memiliki akses Premium.</p>
+                        <p class="premium-expiry" id="premiumExpiry"></p>
+                    </div>
+                </div>
+                
+                <!-- Information Page -->
+                <div class="page" id="page-information">
+                    <div class="info-card">
+                        <div class="info-item">
+                            <span class="info-label">
+                                <i class="fas fa-user"></i>
+                                Pembuat
+                            </span>
+                            <span class="info-value">Hermawan</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">
+                                <i class="fas fa-calendar"></i>
+                                Tanggal Buat
+                            </span>
+                            <span class="info-value">6 Maret 2026</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">
+                                <i class="fas fa-server"></i>
+                                Server Status
+                            </span>
+                            <span class="info-value online" id="infoServerStatus">ON</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">
+                                <i class="fas fa-code-branch"></i>
+                                Version
+                            </span>
+                            <span class="info-value">ZNL 1.0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ============================================
+        // ZNL - ZONE ANONYMOUS LINK
+        // Modern Anonymous Messaging Platform
+        // ============================================
+
+        // ============================================
+        // CONSTANTS & CONFIG
+        // ============================================
+        const PREMIUM_PASSWORD = 'PremiumusersareLIMITEDto2026only';
+        const PREMIUM_DURATION = 30 * 24 * 60 * 60 * 1000; // 30 days in ms
+        const BOT_MESSAGE_INTERVAL = 7 * 60 * 1000; // 7 minutes in ms
+        const SPAM_COOLDOWN = 10 * 1000; // 10 seconds in ms
+        
+        const BOT_MESSAGES = [
+            "Someone is thinking about you.",
+            "What is your biggest secret?",
+            "Do you like someone right now?",
+            "If you could change one thing about yourself, what would it be?",
+            "What's your biggest dream?",
+            "Tell me something nobody knows about you.",
+            "What's the most embarrassing thing you've ever done?",
+            "If you had one wish, what would it be?",
+            "What's your favorite memory?",
+            "Who inspires you the most?"
+        ];
+
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+        let currentUser = null;
+        let lastSendTime = 0;
+        let botMessageTimer = null;
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        // Generate unique ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Format date
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+            
+            // Less than 1 minute
+            if (diff < 60000) {
+                return 'Baru saja';
+            }
+            // Less than 1 hour
+            if (diff < 3600000) {
+                const minutes = Math.floor(diff / 60000);
+                return `${minutes} menit yang lalu`;
+            }
+            // Less than 24 hours
+            if (diff < 86400000) {
+                const hours = Math.floor(diff / 3600000);
+                return `${hours} jam yang lalu`;
+            }
+            // Less than 7 days
+            if (diff < 604800000) {
+                const days = Math.floor(diff / 86400000);
+                return `${days} hari yang lalu`;
+            }
+            
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        // Get device info from user agent
+        function getDeviceInfo() {
+            const ua = navigator.userAgent;
+            let device = 'Unknown Device';
+            
+            if (/Android/.test(ua)) {
+                const match = ua.match(/Android\s([\d.]+)/);
+                device = `Android ${match ? match[1] : ''}`.trim();
+                if (/Samsung/.test(ua)) device += ' (Samsung)';
+                else if (/OPPO|Oppo/.test(ua)) device += ' (OPPO)';
+                else if (/Xiaomi|Redmi|MI/.test(ua)) device += ' (Xiaomi)';
+                else if (/Vivo|vivo/.test(ua)) device += ' (Vivo)';
+                else if (/Realme|realme/.test(ua)) device += ' (Realme)';
+                else device += ' Phone';
+            } else if (/iPhone|iPad|iPod/.test(ua)) {
+                if (/iPhone/.test(ua)) device = 'iPhone';
+                else if (/iPad/.test(ua)) device = 'iPad';
+                else device = 'iOS Device';
+            } else if (/Windows/.test(ua)) {
+                device = 'Windows PC';
+            } else if (/Macintosh|Mac OS X/.test(ua)) {
+                device = 'MacBook/Mac';
+            } else if (/Linux/.test(ua)) {
+                device = 'Linux PC';
+            }
+            
+            return device;
+        }
+
+        // Check if user has premium
+        function hasPremium() {
+            if (!currentUser) return false;
+            const users = JSON.parse(localStorage.getItem('znl_users') || '{}');
+            const user = users[currentUser];
+            if (!user || !user.premiumExpiry) return false;
+            return Date.now() < user.premiumExpiry;
+        }
+
+        // Show toast notification
+        function showToast(title, message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <div class="toast-icon ${type}">
+                    <i class="fas ${icons[type]}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // Request notification permission
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+
+        // Send browser notification
+        function sendBrowserNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: body,
+                    icon: 'https://via.placeholder.com/64/6366f1/ffffff?text=ZNL'
+                });
+            }
+        }
+
+        // ============================================
+        // LOCAL STORAGE FUNCTIONS
+        // ============================================
+        
+        // Initialize storage
+        function initStorage() {
+            if (!localStorage.getItem('znl_users')) {
+                localStorage.setItem('znl_users', JSON.stringify({}));
+            }
+            if (!localStorage.getItem('znl_notifications')) {
+                localStorage.setItem('znl_notifications', JSON.stringify({}));
+            }
+        }
+
+        // Register user
+        function registerUser(username, password) {
+            const users = JSON.parse(localStorage.getItem('znl_users') || '{}');
+            
+            if (users[username]) {
+                return { success: false, message: 'Username sudah terdaftar' };
+            }
+            
+            users[username] = {
+                password: password,
+                createdAt: Date.now(),
+                premiumExpiry: null
+            };
+            
+            localStorage.setItem('znl_users', JSON.stringify(users));
+            
+            // Initialize empty messages
+            localStorage.setItem(`messages_${username}`, JSON.stringify([]));
+            
+            // Initialize empty notifications
+            const notifications = JSON.parse(localStorage.getItem('znl_notifications') || '{}');
+            notifications[username] = [];
+            localStorage.setItem('znl_notifications', JSON.stringify(notifications));
+            
+            return { success: true, message: 'Registrasi berhasil' };
+        }
+
+        // Login user
+        function loginUser(username, password) {
+            const users = JSON.parse(localStorage.getItem('znl_users') || '{}');
+            
+            if (!users[username]) {
+                return { success: false, message: 'Username tidak ditemukan' };
+            }
+            
+            if (users[username].password !== password) {
+                return { success: false, message: 'Password salah' };
+            }
+            
+            currentUser = username;
+            localStorage.setItem('znl_currentUser', username);
+            
+            return { success: true, message: 'Login berhasil' };
+        }
+
+        // Logout user
+        function logoutUser() {
+            currentUser = null;
+            localStorage.removeItem('znl_currentUser');
+            stopBotMessages();
+        }
+
+        // Get messages for user
+        function getMessages(username) {
+            return JSON.parse(localStorage.getItem(`messages_${username}`) || '[]');
+        }
+
+        // Send message to user
+        function sendMessage(toUsername, message, fromDevice = null) {
+            const messages = getMessages(toUsername);
+            
+            const newMessage = {
+                id: generateId(),
+                text: message,
+                timestamp: Date.now(),
+                device: fromDevice || getDeviceInfo(),
+                isBot: false
+            };
+            
+            messages.unshift(newMessage);
+            localStorage.setItem(`messages_${toUsername}`, JSON.stringify(messages));
+            
+            // Add notification
+            addNotification(toUsername, 'message', 'Pesan Baru', 'Kamu menerima pesan anonim baru');
+            
+            return true;
+        }
+
+        // Add notification
+        function addNotification(username, type, title, message) {
+            const notifications = JSON.parse(localStorage.getItem('znl_notifications') || '{}');
+            
+            if (!notifications[username]) {
+                notifications[username] = [];
+            }
+            
+            notifications[username].unshift({
+                id: generateId(),
+                type: type,
+                title: title,
+                message: message,
+                timestamp: Date.now(),
+                read: false
+            });
+            
+            // Keep only last 50 notifications
+            if (notifications[username].length > 50) {
+                notifications[username] = notifications[username].slice(0, 50);
+            }
+            
+            localStorage.setItem('znl_notifications', JSON.stringify(notifications));
+            
+            // Update badge if current user
+            if (username === currentUser) {
+                updateNotificationBadge();
+            }
+            
+            // Send browser notification
+            if (username === currentUser) {
+                sendBrowserNotification(title, message);
+            }
+        }
+
+        // Get notifications for user
+        function getNotifications(username) {
+            const notifications = JSON.parse(localStorage.getItem('znl_notifications') || '{}');
+            return notifications[username] || [];
+        }
+
+        // Mark notifications as read
+        function markNotificationsAsRead(username) {
+            const notifications = JSON.parse(localStorage.getItem('znl_notifications') || '{}');
+            
+            if (notifications[username]) {
+                notifications[username].forEach(notif => notif.read = true);
+                localStorage.setItem('znl_notifications', JSON.stringify(notifications));
+                updateNotificationBadge();
+            }
+        }
+
+        // Activate premium
+        function activatePremium(username) {
+            const users = JSON.parse(localStorage.getItem('znl_users') || '{}');
+            
+            if (users[username]) {
+                users[username].premiumExpiry = Date.now() + PREMIUM_DURATION;
+                localStorage.setItem('znl_users', JSON.stringify(users));
+                
+                // Add notification
+                addNotification(username, 'premium', 'Premium Aktif', 'Premium kamu telah berhasil diaktifkan!');
+                
+                return true;
+            }
+            
+            return false;
+        }
+
+        // ============================================
+        // UI UPDATE FUNCTIONS
+        // ============================================
+        
+        // Show login page
+        function showLoginPage() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('registerPage').style.display = 'none';
+            document.getElementById('dashboard').classList.remove('active');
+        }
+
+        // Show register page
+        function showRegisterPage() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('registerPage').style.display = 'flex';
+            document.getElementById('dashboard').classList.remove('active');
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('registerPage').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            
+            updateDashboard();
+            startBotMessages();
+            requestNotificationPermission();
+        }
+
+        // Update dashboard
+        function updateDashboard() {
+            if (!currentUser) return;
+            
+            // Update user info
+            document.getElementById('sidebarUsername').textContent = currentUser;
+            document.getElementById('userAvatar').textContent = currentUser.charAt(0).toUpperCase();
+            document.getElementById('welcomeTitle').textContent = `Welcome back, ${currentUser}`;
+            
+            // Update link
+            const link = `https://znl.site/${currentUser}`;
+            document.getElementById('dashboardLink').textContent = link;
+            document.getElementById('myLink').textContent = link;
+            
+            // Update stats
+            const messages = getMessages(currentUser);
+            const today = new Date().setHours(0, 0, 0, 0);
+            const todayMessages = messages.filter(m => new Date(m.timestamp).setHours(0, 0, 0, 0) === today);
+            
+            document.getElementById('totalMessages').textContent = messages.length;
+            document.getElementById('todayMessages').textContent = todayMessages.length;
+            
+            // Update premium status
+            const isPremium = hasPremium();
+            document.getElementById('premiumStatus').innerHTML = isPremium ? 
+                '<span class="badge badge-premium"><i class="fas fa-crown"></i> PREMIUM</span>' : 
+                '<span class="badge badge-free">FREE</span>';
+            
+            // Update status dot
+            const statusDot = document.getElementById('statusDot');
+            if (isPremium) {
+                statusDot.classList.add('premium');
+            } else {
+                statusDot.classList.remove('premium');
+            }
+            
+            // Update server status
+            const serverStatus = navigator.onLine ? 'ON' : 'OFF';
+            const serverStatusEl = document.getElementById('serverStatus');
+            serverStatusEl.textContent = serverStatus;
+            serverStatusEl.style.color = navigator.onLine ? 'var(--accent-success)' : 'var(--accent-error)';
+            
+            // Update info page server status
+            const infoServerStatus = document.getElementById('infoServerStatus');
+            infoServerStatus.textContent = serverStatus;
+            infoServerStatus.className = navigator.onLine ? 'info-value online' : 'info-value offline';
+            
+            // Update premium page
+            updatePremiumPage();
+            
+            // Update messages
+            updateMessagesPage();
+            
+            // Update notifications
+            updateNotificationsPage();
+            updateNotificationBadge();
+        }
+
+        // Update premium page
+        function updatePremiumPage() {
+            const isPremium = hasPremium();
+            const users = JSON.parse(localStorage.getItem('znl_users') || '{}');
+            const user = users[currentUser];
+            
+            if (isPremium && user && user.premiumExpiry) {
+                document.getElementById('premiumUpgrade').style.display = 'none';
+                document.getElementById('premiumActive').style.display = 'block';
+                
+                const expiryDate = new Date(user.premiumExpiry);
+                document.getElementById('premiumExpiry').textContent = 
+                    `Berlaku hingga: ${expiryDate.toLocaleDateString('id-ID', { 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })}`;
+            } else {
+                document.getElementById('premiumUpgrade').style.display = 'block';
+                document.getElementById('premiumActive').style.display = 'none';
+            }
+        }
+
+        // Update messages page
+        function updateMessagesPage() {
+            const messages = getMessages(currentUser);
+            const container = document.getElementById('messagesContainer');
+            const isPremium = hasPremium();
+            
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>Belum ada pesan anonim</p>
+                        <p style="font-size: 0.875rem; margin-top: var(--spacing-sm);">
+                            Bagikan link anonimmu untuk mulai menerima pesan!
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = messages.map(msg => `
+                <div class="message-card">
+                    <div class="message-content">${escapeHtml(msg.text)}</div>
+                    <div class="message-meta">
+                        <span class="message-time">
+                            <i class="fas fa-clock"></i>
+                            ${formatDate(msg.timestamp)}
+                        </span>
+                        ${isPremium ? 
+                            `<span class="message-device">
+                                <i class="fas fa-mobile-alt"></i>
+                                ${msg.device}
+                            </span>` :
+                            `<span class="message-device locked">
+                                <i class="fas fa-lock"></i>
+                                Premium only
+                            </span>`
+                        }
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update message badge
+            const badge = document.getElementById('messageBadge');
+            if (messages.length > 0) {
+                badge.textContent = messages.length > 99 ? '99+' : messages.length;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // Update notifications page
+        function updateNotificationsPage() {
+            const notifications = getNotifications(currentUser);
+            const container = document.getElementById('notificationsContainer');
+            
+            if (notifications.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>Belum ada notifikasi</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = notifications.map(notif => {
+                const icons = {
+                    message: 'fa-envelope message',
+                    bot: 'fa-robot bot',
+                    premium: 'fa-crown premium',
+                    system: 'fa-info-circle system'
+                };
+                
+                return `
+                    <div class="notification-card ${notif.read ? '' : 'unread'}">
+                        <div class="notification-icon ${notif.type}">
+                            <i class="fas ${icons[notif.type] || icons.system}"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">${notif.title}</div>
+                            <div class="notification-time">
+                                <i class="fas fa-clock"></i>
+                                ${formatDate(notif.timestamp)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Update notification badge
+        function updateNotificationBadge() {
+            const notifications = getNotifications(currentUser);
+            const unreadCount = notifications.filter(n => !n.read).length;
+            
+            const badge = document.getElementById('notifBadge');
+            const headerBadge = document.getElementById('headerNotifBadge');
+            
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                badge.style.display = 'flex';
+                headerBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                headerBadge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+                headerBadge.style.display = 'none';
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============================================
+        // NAVIGATION FUNCTIONS
+        // ============================================
+        
+        // Navigate to page
+        function navigateTo(page) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            // Show target page
+            const targetPage = document.getElementById(`page-${page}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === page) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Update page title
+            const titles = {
+                dashboard: 'Dashboard',
+                link: 'My Anonymous Link',
+                messages: 'Messages',
+                search: 'Search URL For Message',
+                send: 'Send Message',
+                notifications: 'Notifications',
+                premium: 'Premium',
+                information: 'Information'
+            };
+            document.getElementById('pageTitle').textContent = titles[page] || 'ZNL';
+            
+            // Close sidebar on mobile
+            if (window.innerWidth < 1024) {
+                document.getElementById('sidebar').classList.remove('active');
+                document.getElementById('sidebarOverlay').classList.remove('active');
+            }
+            
+            // Update page content
+            if (page === 'messages') {
+                updateMessagesPage();
+            } else if (page === 'notifications') {
+                markNotificationsAsRead(currentUser);
+                updateNotificationsPage();
+            } else if (page === 'premium') {
+                updatePremiumPage();
+            } else if (page === 'dashboard') {
+                updateDashboard();
+            }
+        }
+
+        // ============================================
+        // BOT MESSAGE FUNCTIONS
+        // ============================================
+        
+        // Start bot messages
+        function startBotMessages() {
+            if (botMessageTimer) {
+                clearInterval(botMessageTimer);
+            }
+            
+            botMessageTimer = setInterval(() => {
+                if (currentUser) {
+                    sendBotMessage();
+                }
+            }, BOT_MESSAGE_INTERVAL);
+        }
+
+        // Stop bot messages
+        function stopBotMessages() {
+            if (botMessageTimer) {
+                clearInterval(botMessageTimer);
+                botMessageTimer = null;
+            }
+        }
+
+        // Send bot message
+        function sendBotMessage() {
+            if (!currentUser) return;
+            
+            const messages = getMessages(currentUser);
+            const lastMessage = messages[0];
+            
+            // Only send if no messages in last 7 minutes
+            if (!lastMessage || (Date.now() - lastMessage.timestamp) > BOT_MESSAGE_INTERVAL) {
+                const randomMessage = BOT_MESSAGES[Math.floor(Math.random() * BOT_MESSAGES.length)];
+                
+                const botMsg = {
+                    id: generateId(),
+                    text: randomMessage,
+                    timestamp: Date.now(),
+                    device: 'AI Bot',
+                    isBot: true
+                };
+                
+                messages.unshift(botMsg);
+                localStorage.setItem(`messages_${currentUser}`, JSON.stringify(messages));
+                
+                // Add notification
+                addNotification(currentUser, 'bot', 'Pesan dari AI Bot', randomMessage);
+                
+                // Update UI if on messages page
+                const messagesPage = document.getElementById('page-messages');
+                if (messagesPage && messagesPage.classList.contains('active')) {
+                    updateMessagesPage();
+                }
+                
+                // Show toast
+                showToast('Pesan Baru', 'Kamu menerima pesan dari AI Bot', 'info');
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initStorage();
+            
+            // Check for auto login
+            const savedUser = localStorage.getItem('znl_currentUser');
+            if (savedUser) {
+                const users = JSON.parse(localStorage.getItem('znl_users') || '{}');
+                if (users[savedUser]) {
+                    currentUser = savedUser;
+                    showDashboard();
+                }
+            }
+            
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                
+                const result = loginUser(username, password);
+                
+                if (result.success) {
+                    showToast('Berhasil!', result.message, 'success');
+                    showDashboard();
+                } else {
+                    showToast('Gagal!', result.message, 'error');
+                }
+            });
+            
+            // Register form
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('registerUsername').value.trim();
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('registerConfirmPassword').value;
+                
+                if (password !== confirmPassword) {
+                    showToast('Gagal!', 'Password tidak cocok', 'error');
+                    return;
+                }
+                
+                if (username.length < 3) {
+                    showToast('Gagal!', 'Username minimal 3 karakter', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showToast('Gagal!', 'Password minimal 6 karakter', 'error');
+                    return;
+                }
+                
+                const result = registerUser(username, password);
+                
+                if (result.success) {
+                    showToast('Berhasil!', result.message, 'success');
+                    showLoginPage();
+                } else {
+                    showToast('Gagal!', result.message, 'error');
+                }
+            });
+            
+            // Show register button
+            document.getElementById('showRegisterBtn').addEventListener('click', showRegisterPage);
+            
+            // Show login button
+            document.getElementById('showLoginBtn').addEventListener('click', showLoginPage);
+            
+            // Logout button
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                logoutUser();
+                showLoginPage();
+                showToast('Logout', 'Kamu telah logout', 'info');
+            });
+            
+            // Menu toggle
+            document.getElementById('menuToggle').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('active');
+                document.getElementById('sidebarOverlay').classList.toggle('active');
+            });
+            
+            // Sidebar overlay
+            document.getElementById('sidebarOverlay').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.remove('active');
+                document.getElementById('sidebarOverlay').classList.remove('active');
+            });
+            
+            // Navigation items
+            document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+                item.addEventListener('click', function() {
+                    navigateTo(this.dataset.page);
+                });
+            });
+            
+            // Header notification button
+            document.getElementById('headerNotifBtn').addEventListener('click', function() {
+                navigateTo('notifications');
+            });
+            
+            // Copy link buttons
+            document.getElementById('copyLinkBtn').addEventListener('click', function() {
+                const link = document.getElementById('myLink').textContent;
+                navigator.clipboard.writeText(link).then(() => {
+                    showToast('Berhasil!', 'Link berhasil disalin', 'success');
+                });
+            });
+            
+            document.getElementById('copyLinkDashboard').addEventListener('click', function() {
+                const link = document.getElementById('dashboardLink').textContent;
+                navigator.clipboard.writeText(link).then(() => {
+                    showToast('Berhasil!', 'Link berhasil disalin', 'success');
+                });
+            });
+            
+            // Share link buttons
+            document.getElementById('shareLinkBtn').addEventListener('click', function() {
+                const link = document.getElementById('myLink').textContent;
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'ZNL - Anonymous Link',
+                        text: 'Kirim pesan anonim ke saya!',
+                        url: link
+                    });
+                } else {
+                    showToast('Info', 'Fitur share tidak didukung di browser ini', 'info');
+                }
+            });
+            
+            document.getElementById('shareLinkDashboard').addEventListener('click', function() {
+                const link = document.getElementById('dashboardLink').textContent;
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'ZNL - Anonymous Link',
+                        text: 'Kirim pesan anonim ke saya!',
+                        url: link
+                    });
+                } else {
+                    showToast('Info', 'Fitur share tidak didukung di browser ini', 'info');
+                }
+            });
+            
+            // Search button
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                const username = document.getElementById('searchUsername').value.trim();
+                
+                if (!username) {
+                    showToast('Gagal!', 'Masukkan username', 'error');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem('znl_users') || '{}');
+                
+                if (!users[username]) {
+                    showToast('Gagal!', 'User tidak ditemukan', 'error');
+                    return;
+                }
+                
+                // Setup send message page
+                document.getElementById('recipientAvatar').textContent = username.charAt(0).toUpperCase();
+                document.getElementById('recipientName').textContent = username;
+                document.getElementById('messageText').value = '';
+                
+                // Check if sending to self
+                const isSelf = username === currentUser;
+                document.getElementById('selfMessageError').style.display = isSelf ? 'flex' : 'none';
+                document.getElementById('sendMessageBtn').disabled = isSelf;
+                document.getElementById('sendMessageBtn').style.opacity = isSelf ? '0.5' : '1';
+                
+                // Store target username
+                document.getElementById('sendMessageBtn').dataset.target = username;
+                
+                navigateTo('send');
+            });
+            
+            // Send message button
+            document.getElementById('sendMessageBtn').addEventListener('click', function() {
+                const targetUsername = this.dataset.target;
+                const message = document.getElementById('messageText').value.trim();
+                
+                if (!message) {
+                    showToast('Gagal!', 'Tulis pesan terlebih dahulu', 'error');
+                    return;
+                }
+                
+                // Check spam cooldown
+                const now = Date.now();
+                if (now - lastSendTime < SPAM_COOLDOWN) {
+                    const waitTime = Math.ceil((SPAM_COOLDOWN - (now - lastSendTime)) / 1000);
+                    showToast('Tunggu!', `Tunggu ${waitTime} detik lagi`, 'error');
+                    return;
+                }
+                
+                lastSendTime = now;
+                
+                // Send message
+                sendMessage(targetUsername, message);
+                
+                showToast('Berhasil!', 'Pesan anonim berhasil dikirim', 'success');
+                
+                // Clear and go back
+                document.getElementById('messageText').value = '';
+                navigateTo('search');
+            });
+            
+            // Activate premium button
+            document.getElementById('activatePremiumBtn').addEventListener('click', function() {
+                const password = document.getElementById('premiumPassword').value;
+                
+                if (password !== PREMIUM_PASSWORD) {
+                    showToast('Gagal!', 'Password premium salah', 'error');
+                    return;
+                }
+                
+                if (activatePremium(currentUser)) {
+                    showToast('Berhasil!', 'Premium berhasil diaktifkan!', 'success');
+                    updatePremiumPage();
+                    updateDashboard();
+                } else {
+                    showToast('Gagal!', 'Gagal mengaktifkan premium', 'error');
+                }
+                
+                document.getElementById('premiumPassword').value = '';
+            });
+            
+            // Online/offline detection
+            window.addEventListener('online', function() {
+                updateDashboard();
+                showToast('Online', 'Koneksi internet tersedia', 'success');
+            });
+            
+            window.addEventListener('offline', function() {
+                updateDashboard();
+                showToast('Offline', 'Koneksi internet terputus', 'error');
+            });
+        });
+    </script>
+</body>
+</html>
